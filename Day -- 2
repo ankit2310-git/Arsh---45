@@ -1,0 +1,128 @@
+// Question 1
+
+class Solution {
+    public int maxProfit(int[] prices) {
+
+        int maxProfit = 0;
+        int minValue = Integer.MAX_VALUE;
+
+        for(int i = 0; i < prices.length; i++){
+            if(prices[i] < minValue){
+                minValue = prices[i];
+            }
+            else if(prices[i] - minValue > maxProfit){
+                maxProfit = prices[i] - minValue;
+            }
+        }
+
+        return maxProfit;
+    }
+}
+
+// 2nd Question
+
+class Solution
+{
+    public long findMinDiff (ArrayList<Integer> a, int n, int m)
+    {
+        Collections.sort(a);
+        int ind = 0;
+        long min = Integer.MAX_VALUE;
+        for(int i =m-1; i< a.size(); i++){
+            min = Math.min(min, a.get(i) - a.get(ind));
+            ind++;
+        }
+        return min;
+    }
+}
+
+// 3rd Question
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] ans = new int[2];
+        for(int i=0; i< nums.length; i++){
+            int diff = target - nums[i];
+            if(map.containsKey(diff)){
+                ans[0] = i;
+                ans[1] = map.get(diff);
+            } else{
+                map.put(nums[i], i);
+            }
+        }
+        return ans;
+    }
+}
+
+// 4th Question
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int buy = Integer.MAX_VALUE;
+        int sell = Integer.MIN_VALUE;
+        int total = 0;
+        int profit = 0;
+
+        for(int i=0; i< prices.length; i++){
+            if(prices[i] < buy){
+                buy = prices[i];
+            }else if(prices[i] >= sell){
+                profit = Math.max(profit, prices[i]-buy);
+                sell = Integer.MIN_VALUE;
+                total += profit;
+                buy = prices[i];
+                profit = 0;
+            }else{
+                profit = Math.max(profit, prices[i]-buy);
+            }
+        }
+        return total;
+    }
+}
+
+// 5th Question
+
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int sum = 0;
+        int count = 0;
+        for(int i=0; i< nums.length; i++){
+            sum += nums[i];
+            int rem = sum%k;
+            if(rem < 0) rem += k;
+            if(map.containsKey(rem)){
+                int x = map.get(rem);
+                map.put(rem, x+1);
+                count += x;
+            }else{
+                map.put(rem, 1);
+            }
+        }
+        return count;
+    }
+}
+
+// 6th question
+
+class Solution {
+    public int maxArea(int[] height) {
+        int n = height.length;
+
+        int water = Integer.MIN_VALUE;
+        int st = 0;
+        int ind = n-1;
+        while(st < ind){
+            water = Math.max(water, Math.min(height[st], height[ind])*(ind - st));
+            if(height[ind] > height[st]){
+                st++;
+            }else{
+                ind--;
+            }
+        }
+        return water;
+    }
+}
+
