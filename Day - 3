@@ -1,0 +1,177 @@
+// Question 1 
+
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        int i = 0;
+        while(i < nums.length){
+            int correct = nums[i]-1;
+            if(nums[i] != nums[correct]){
+                swap(nums, i, correct);
+            }else{
+                i++;
+            }
+        }
+
+        for(int in=0; in< nums.length; in++){
+            if(nums[in]-1 != in) list.add(nums[in]);
+        }
+
+        return list;
+    }
+
+    void swap(int[] nums, int s, int e){
+        int temp = nums[s];
+        nums[s] = nums[e];
+        nums[e] = temp;
+    }
+}
+
+// Question 2
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        for(int i =0; i < n; i++){
+            if(i > 0 && nums[i] == nums[i-1]) continue;
+            int target = 0-nums[i];
+            int j = i+1;
+            int k = n-1;
+            while(j < k){
+                if(nums[j] + nums[k] > target){
+                    k--;
+                }else if(nums[j] + nums[k] < target){
+                    j++;
+                }else{
+                    list.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    j++;
+                    while(j < k && nums[j-1] == nums[j]) j++;
+                }
+            }
+        }
+        return list;
+    }
+}
+
+// Question 3
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        for(int i=0; i < n; i++){
+            if(i > 0 && nums[i] == nums[i-1]) continue;
+            for(int j = i+1; j < n; j++){
+                if(j != i+1 && nums[j] == nums[j-1]) continue;
+                int k = j+1;
+                int l = n-1;
+                while(k < l){
+                    long sum = (long) nums[i]+nums[j]+nums[k]+nums[l];
+                    if(sum < target){
+                        k++;
+                    }else if(sum > target){
+                        l--;
+                    }else{
+                        list.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
+                        k++;
+                        while(k < l && nums[k] == nums[k-1]) k++;
+                    }
+                }
+            }
+        }
+        return list;
+    }
+}
+
+// Question 4
+
+class Solution {
+    public int maxScore(int[] cardPoints, int k) {
+        int n = cardPoints.length;
+        int[] prefix = new int[n];
+        int j = 0;
+        while(j < n){
+            prefix[j] = cardPoints[j];
+            if(j != 0) prefix[j] += prefix[j-1];
+            j++;
+        }
+
+        int max = -1;
+        for(int i=0; i<k; i++){
+            int sum = prefix[i] + (prefix[n-1]-prefix[n-k+i]);
+            max = Math.max(max, sum);
+        }
+
+        max = Math.max(max, Math.max(prefix[k-1], prefix[n-1] - prefix[n-k]+cardPoints[n-k]));
+        return max;
+    }
+}
+
+// Question 5
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int n = nums.length;
+        int sum = 0;
+        int count = 0;
+        map.put(0, 1);
+        for(int i =0; i<n; i++){
+            sum += nums[i];
+            if(map.containsKey(sum - k)) count += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0)+1);
+        }
+        return count;
+    }
+}
+
+// Question 6
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> list = new ArrayList<>();
+        if (matrix == null || matrix.length == 0) return list;
+
+        int top = 0, left = 0;
+        int btm = matrix.length - 1, right = matrix[0].length - 1;
+        int cnt = 0;
+
+        while (top <= btm && left <= right) {
+            switch (cnt % 4) {
+                case 0:
+                    for (int i = left; i <= right; i++) {
+                        list.add(matrix[top][i]);
+                    }
+                    top++;
+                    break;
+                case 1:
+                    for (int i = top; i <= btm; i++) {
+                        list.add(matrix[i][right]);
+                    }
+                    right--;
+                    break;
+                case 2:
+                    for (int i = right; i >= left; i--) {
+                        list.add(matrix[btm][i]);
+                    }
+                    btm--;
+                    break;
+                case 3:
+                    for (int i = btm; i >= top; i--) {
+                        list.add(matrix[i][left]);
+                    }
+                    left++;
+                    break;
+            }
+            cnt++;
+        }
+        return list;
+    }
+}
+
