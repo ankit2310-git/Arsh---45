@@ -132,3 +132,24 @@ class Solution {
 
 // Question 5
 
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> list = new ArrayList<>();
+        recursion(list, "", n, n);
+        return list;
+    }
+
+    void recursion(List<String> list, String s, int o, int c) {
+        if (o == 0 && c == 0) {
+            list.add(s);
+            return;
+        }
+        if (o > 0) {
+            recursion(list, s + '(', o - 1, c);
+        }
+        if (c > o) {
+            recursion(list, s + ')', o, c - 1);
+        }
+    }
+}
+
